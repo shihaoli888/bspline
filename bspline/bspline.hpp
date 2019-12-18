@@ -10,28 +10,11 @@ struct Bspline {
 		assert(n + k + 1 <= knots.size());
 	}
 	vec3 operator()(const std::vector<vec3>& ps, float t) const {
-		//DeBoor-Cox calculation
 		if (t < knots[k - 1] || t >= knots[n + 1]) return vec3(0);
 		auto&& nik = Nik(k, t);
 		vec3 res(0,0,0);
 		for (int i = 0; i < nik.size(); i++) res += nik[i] * ps[i];
 		return res;
-		/*std::vector<vec3> tps(ps);
-		for (int j = 1; j <= k - 1; j++) {
-			for (int i = n; i >= j; i--) {
-				float denominator = knots[i + k - j] - knots[i];
-				if (denominator == 0) tps[i] = vec3(0);
-				else {
-					float tij = (t - knots[i]) / denominator;
-					tps[i] = (1 - tij) * tps[i - 1] + tij * tps[i];
-				}
-			}
-		}
-		int i = k-1;
-		for (; i < n + 1; i++) {
-			if (t < knots[i + 1]) break;
-		}
-		return tps[i];*/
 	}
 	float Nik(int i, int k, float t) const {
 		if (t < knots[i] || t >= knots[i + k]) return 0;
