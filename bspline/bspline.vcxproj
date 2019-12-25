@@ -73,6 +73,10 @@
     <IncludePath>C:\Users\lsh\Desktop\program\bspline\glfw\include;C:\Users\lsh\Desktop\program\bspline\glad\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\lsh\Desktop\program\bspline\glfw;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Users\lsh\Desktop\program\bspline\glfw\include;C:\Users\lsh\Desktop\program\bspline\glad\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\lsh\Desktop\program\bspline\glfw;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -125,6 +129,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
