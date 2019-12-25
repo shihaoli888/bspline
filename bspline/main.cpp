@@ -64,6 +64,7 @@ namespace {
 	float theta = 1.57;
 	float phi = 0;
 	bool change = false;
+	bool is_approx = false;
 	float t_step = 0.02f;
 }
 
@@ -99,8 +100,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			change = true;
 		}
 		else if (fitter.parameter_method == Fitter::centripetal) {
-			std::cout << "parameter method: centripetal 0.5 -> universal" << std::endl;
-			fitter.parameter_method = Fitter::universal;
+			if (!is_approx) {
+				std::cout << "parameter method: centripetal 0.5 -> universal" << std::endl;
+				fitter.parameter_method = Fitter::universal;
+			}
+			else {
+				std::cout << "parameter method: centripetal 0.5 -> uniform" << std::endl;
+				fitter.parameter_method = Fitter::uniformly_space;
+			}
 			change = true;
 		}
 		else if (fitter.parameter_method == Fitter::universal) {
@@ -332,7 +339,6 @@ bool read_file(const char* file_name,std::vector<std::vector<vec3>>* data, int* 
 int main(int argc, char** argv) {
 	int m, n;
 	int p, q;
-	bool is_approx = false;
 	if (strcmp(argv[1], "interplation") == 0) {
 		is_approx = false;
 	}
@@ -416,55 +422,3 @@ int main(int argc, char** argv) {
 	delete data;
 	return 0;
 }
-
-//int main() {
-//	Fitter fitter;
-//	fitter.knot_generation = Fitter::uniform;
-//	float rdata[] = {
-//		0.0, 0.0, 0.0,
-//		1.4, 0.0, 0.0,
-//		3.7, 0.0, 2.0,
-//		4.5, 0.0, 2.2,
-//		6.2, 0.0, 0.0,
-//		0.0, 1.0, 0.0,
-//		0.5, 1.0, 0.0,
-//		3.2, 1.0, 2.2,
-//		4.6, 1.0, 3.1,
-//		6.5, 1.0, 0.0,
-//		0.0, 2.0, 0.0,
-//		0.7, 2.0, 0.0,
-//		2.5, 2.0, 2.1,
-//		4.5, 2.0, 4.2,
-//		7.2, 2.0, 0.0,
-//		0.0, 3.0, 0.0,
-//		1.0, 3.0, 0.0,
-//		4.0, 3.0, 2.0,
-//		4.5, 3.0, 4.2,
-//		5.0, 3.0, 0.0 };
-//	int row = 4, col = 5;
-//	std::vector<std::vector<vec3>> data;
-//	data.resize(row);
-//	for (int i = 0; i < row; i++) {
-//		for (int j = 0; j < col; j++) {
-//			int idx = (i * col + j) * 3;
-//			data[i].emplace_back(rdata[idx + 0], rdata[idx + 1], rdata[idx + 2]);
-//		}
-//	}
-//	//int m = row - 1, n = col - 1;
-//	int m = row-2, n = col-2;
-//	std::vector<std::vector<vec3>> ps(m+1, std::vector<vec3>(n+1, vec3(0)));
-//	std::vector<float> us(row);
-//	std::vector<float> vs(col);
-//	Bspline_Surface* bsp = nullptr;
-//	//fitter.interplation(data, 2, 2, row - 1, col - 1, &ps, &us, &vs, &bsp);
-//	fitter.approximation(data, 2, 2, m, n, &ps, &us, &vs, &bsp);
-//	if (bsp) {
-//		auto&& bs = *bsp;
-//		for (int i = 0; i < row; i++) {
-//			for (int j = 0; j < col; j++) {
-//				auto&& v = bs(ps, us[i], vs[j]);
-//				std::cout << v.x << " " << v.y << " " << v.z << std::endl;
-//			}
-//		}
-//	}
-//}
